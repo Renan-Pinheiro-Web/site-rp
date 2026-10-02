@@ -80,14 +80,16 @@ img { max-width: 100%; display: block; }
   height: 60px;
 }
 .logo {
-  font-family: var(--serif);
-  font-size: 22px;
-  font-weight: 500;
-  color: var(--creme);
-  letter-spacing: -.3px;
-  transition: color .3s;
+  display: flex;
+  align-items: center;
 }
-.nav.scrolled .logo { color: var(--cacau); }
+.logo-img {
+  height: 40px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  transition: filter .3s;
+}
+.nav.scrolled .logo-img { filter: none; }
 
 .nav-links {
   display: flex;
@@ -616,11 +618,10 @@ img { max-width: 100%; display: block; }
   gap: 40px;
   padding-bottom: 32px;
 }
-.footer-logo {
-  font-family: var(--serif);
-  font-size: 22px;
-  font-weight: 500;
-  color: var(--creme);
+.footer-logo-img {
+  height: 48px;
+  width: auto;
+  filter: brightness(0) invert(1);
   display: block;
   margin-bottom: 12px;
 }

@@ -1,0 +1,24 @@
+{
+  "name": "site-rp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Renan-Pinheiro-Web/site-rp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Renan-Pinheiro-Web/site-rp/issues"
+  },
+  "homepage": "https://github.com/Renan-Pinheiro-Web/site-rp#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "serve": "^14.2.6"
+  }
+}

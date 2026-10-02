@@ -1,10 +1,18 @@
 {
-  "name": "Sua Marca — Perfumes e Cosméticos",
-  "short_name": "Sua Marca",
+  "name": "Essenza — Perfumaria e Cosméticos",
+  "short_name": "Essenza",
   "description": "Perfumes importados originais e cosméticos em Morada Nova - CE",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#F5EDE6",
   "theme_color": "#2C2420",
-  "lang": "pt-BR"
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "logo essenza sem fundo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
 }
