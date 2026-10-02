@@ -264,6 +264,9 @@ body.menu-open { overflow: hidden; }
   0%, 100% { opacity: .3; }
   50% { opacity: .8; }
 }
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll-line { animation: none; opacity: .5; }
+}
 
 @media (max-width: 600px) {
   .hero { padding: 80px 0 48px; min-height: auto; }
@@ -314,9 +317,10 @@ body.menu-open { overflow: hidden; }
 }
 @media (max-width: 768px) {
   .trust-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+  .trust-item { padding: 16px 12px; }
 }
 @media (max-width: 400px) {
-  .trust-grid { grid-template-columns: 1fr; }
+  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
 }
 
 
