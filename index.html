@@ -339,12 +339,20 @@
 <script>
 /* Burger menu */
 var burger=document.getElementById('burger'),menu=document.getElementById('navMenu');
-burger.addEventListener('click',function(){
+function toggleMenu(){
+  var opening=!menu.classList.contains('open');
   menu.classList.toggle('open');
   burger.classList.toggle('active');
-});
+  document.body.classList.toggle('menu-open',opening);
+}
+function closeMenu(){
+  menu.classList.remove('open');
+  burger.classList.remove('active');
+  document.body.classList.remove('menu-open');
+}
+burger.addEventListener('click',toggleMenu);
 menu.querySelectorAll('a').forEach(function(a){
-  a.addEventListener('click',function(){menu.classList.remove('open');burger.classList.remove('active');});
+  a.addEventListener('click',closeMenu);
 });
 
 /* Reveal on scroll — IntersectionObserver with stagger */
