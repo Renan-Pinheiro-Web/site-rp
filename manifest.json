@@ -1,0 +1,10 @@
+{
+  "name": "Sua Marca — Perfumes e Cosméticos",
+  "short_name": "Sua Marca",
+  "description": "Perfumes importados originais e cosméticos em Morada Nova - CE",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2C2420",
+  "lang": "pt-BR"
+}
