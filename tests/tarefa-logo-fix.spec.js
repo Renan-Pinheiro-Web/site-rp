@@ -26,15 +26,38 @@ test.describe('Correção logo — ícone sobre fundo escuro, lockup completo cl
     await expect(icon).toBeHidden();
   });
 
-  test('footer usa ícone (sem texto), nome aparece no copyright', async ({ page }) => {
+  test('footer usa ícone recolorido para fundo escuro, nome aparece no copyright', async ({ page }) => {
     await page.goto('/');
     const footerImg = page.locator('.footer-logo-img');
     await expect(footerImg).toBeVisible();
     const src = await footerImg.getAttribute('src');
-    expect(src).toContain('icone');
+    expect(src).toContain('icon-dark-bg');
 
     const copyright = await page.locator('.footer-bottom').textContent();
     expect(copyright).toContain('Essenza');
+  });
+
+  test('nav não rolado e footer usam o ícone recolorido para fundo escuro (contorno claro)', async ({ page }) => {
+    await page.goto('/');
+    const navIconSrc = await page.locator('.logo-img--icon').getAttribute('src');
+    expect(navIconSrc).toBe('icon-dark-bg.png');
+  });
+
+  test('nav rolado usa logo completa recortada (sem padding transparente excessivo)', async ({ page }) => {
+    await page.goto('/');
+    const fullSrc = await page.locator('.logo-img--full').getAttribute('src');
+    expect(fullSrc).toBe('logo-essenza-completa.png');
+  });
+
+  test('logo no nav claro é pelo menos tão alta quanto o botão WhatsApp', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 300 });
+    await page.goto('/', { waitUntil: 'networkidle' });
+    await page.evaluate(() => document.getElementById('nav').classList.add('scrolled'));
+    await page.waitForTimeout(200);
+
+    const wppH = await page.locator('.nav-wpp').evaluate(el => el.getBoundingClientRect().height);
+    const logoH = await page.locator('.logo-img--full').evaluate(el => el.getBoundingClientRect().height);
+    expect(logoH).toBeGreaterThanOrEqual(wppH);
   });
 
   test('nenhuma caixa/retângulo de fundo visível atrás da logo', async ({ page }) => {

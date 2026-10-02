@@ -31,17 +31,70 @@ test.describe('Seção de FAQ', () => {
     expect(html).not.toMatch(/pedido mínimo de R\$\s?\d/i);
   });
 
-  test('accordion abre e fecha ao clicar', async ({ page }) => {
+  test('accordion abre e fecha ao clicar, com aria-expanded correto', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto('/');
     const firstItem = page.locator('.faq-item').first();
-    const isOpenBefore = await firstItem.evaluate(el => el.hasAttribute('open'));
-    expect(isOpenBefore).toBe(false);
+    const btn = firstItem.locator('.faq-pergunta');
 
-    await firstItem.locator('.faq-pergunta').click();
-    await page.waitForTimeout(200);
-    const isOpenAfter = await firstItem.evaluate(el => el.hasAttribute('open'));
-    expect(isOpenAfter).toBe(true);
+    expect(await firstItem.evaluate(el => el.classList.contains('open'))).toBe(false);
+    expect(await btn.getAttribute('aria-expanded')).toBe('false');
+
+    await btn.click();
+    await page.waitForTimeout(350);
+    expect(await firstItem.evaluate(el => el.classList.contains('open'))).toBe(true);
+    expect(await btn.getAttribute('aria-expanded')).toBe('true');
+
+    await btn.click();
+    await page.waitForTimeout(350);
+    expect(await firstItem.evaluate(el => el.classList.contains('open'))).toBe(false);
+    expect(await btn.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  test('transição anima via grid-template-rows (0fr → 1fr)', async ({ page }) => {
+    await page.goto('/');
+    const transition = await page.evaluate(() => {
+      var wrap = document.querySelector('.faq-resposta-wrap');
+      return getComputedStyle(wrap).transitionProperty;
+    });
+    expect(transition).toContain('grid-template-rows');
+
+    const closedRows = await page.evaluate(() =>
+      getComputedStyle(document.querySelector('.faq-resposta-wrap')).gridTemplateRows
+    );
+    expect(closedRows).toMatch(/^0px/);
+  });
+
+  test('prefers-reduced-motion: accordion abre sem transição', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    const duration = await page.evaluate(() =>
+      getComputedStyle(document.querySelector('.faq-resposta-wrap')).transitionDuration
+    );
+    expect(duration).toBe('0s');
+  });
+
+  test('abrir uma pergunta fecha qualquer outra aberta (só uma por vez)', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/');
+    const items = page.locator('.faq-item');
+    const first = items.nth(0);
+    const second = items.nth(1);
+
+    await first.locator('.faq-pergunta').click();
+    await page.waitForTimeout(350);
+    expect(await first.evaluate(el => el.classList.contains('open'))).toBe(true);
+
+    await second.locator('.faq-pergunta').click();
+    await page.waitForTimeout(350);
+    expect(await second.evaluate(el => el.classList.contains('open'))).toBe(true);
+    expect(await first.evaluate(el => el.classList.contains('open'))).toBe(false);
+    expect(await first.locator('.faq-pergunta').getAttribute('aria-expanded')).toBe('false');
+
+    const openCount = await page.evaluate(() =>
+      document.querySelectorAll('.faq-item.open').length
+    );
+    expect(openCount).toBe(1);
   });
 
   test('responsivo sem overflow em 375/768/1440', async ({ page }) => {

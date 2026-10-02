@@ -19,7 +19,7 @@ test.describe('Tarefa 1 — Nome e logo Essenza', () => {
     const icon = page.locator('.logo-img--icon');
     await expect(icon).toBeVisible();
     const iconSrc = await icon.getAttribute('src');
-    expect(iconSrc).toContain('essenza');
+    expect(iconSrc).toContain('icon-dark-bg');
 
     const full = page.locator('.logo-img--full');
     await expect(full).toBeHidden();

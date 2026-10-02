@@ -68,6 +68,58 @@ test.describe('Tarefa 5 — Menu mobile fullscreen', () => {
     expect(isActive).toBe(true);
   });
 
+  test('clicar link no menu fecha overlay antes do scroll começar (sem corrida)', async ({ page }) => {
+    await page.click('#burger');
+    await page.waitForTimeout(400);
+
+    // click link and immediately capture menu-open state across the next frames
+    await page.click('.nav-links a[href="#produtos"]');
+
+    // body.menu-open must be gone essentially immediately (closeMenu runs
+    // synchronously in the click handler, before the rAF-deferred scroll)
+    const menuOpenRightAfterClick = await page.evaluate(() =>
+      document.body.classList.contains('menu-open')
+    );
+    expect(menuOpenRightAfterClick).toBe(false);
+
+    await page.waitForTimeout(1200);
+    const scrolled = await page.evaluate(() => window.scrollY);
+    expect(scrolled).toBeGreaterThan(100);
+  });
+
+  test('scroll após fechar menu não gagueja no início (sem salto de velocidade)', async ({ page }) => {
+    await page.click('#burger');
+    await page.waitForTimeout(400);
+    await page.click('.nav-links a[href="#produtos"]');
+
+    // sample scrollY across several animation frames right after the click
+    const samples = await page.evaluate(() => {
+      return new Promise(resolve => {
+        var vals = [];
+        var n = 0;
+        function step(){
+          vals.push(window.scrollY);
+          n++;
+          if(n < 15){ requestAnimationFrame(step); }
+          else { resolve(vals); }
+        }
+        requestAnimationFrame(step);
+      });
+    });
+
+    // compute frame-to-frame deltas; the first real movement should not be
+    // a tiny stutter followed by a much larger jump (sign of the race)
+    const deltas = [];
+    for (let i = 1; i < samples.length; i++) deltas.push(samples[i] - samples[i-1]);
+    const movingDeltas = deltas.filter(d => d > 0.01);
+    expect(movingDeltas.length).toBeGreaterThan(0);
+    // no delta should be more than ~15x the first moving delta (that pattern
+    // would indicate a stuck-then-catches-up stutter)
+    const firstMoving = movingDeltas[0];
+    const maxDelta = Math.max(...movingDeltas);
+    expect(maxDelta).toBeLessThan(firstMoving * 20 + 5);
+  });
+
   test('console sem erros', async ({ page }) => {
     const errors = [];
     page.on('console', msg => { if (msg.type() === 'error') errors.push(msg.text()); });
