@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Renan-Pinheiro-Web/site-rp#readme",
   "devDependencies": {
     "@playwright/test": "^1.63.0",
+    "pngjs": "^7.0.0",
     "serve": "^14.2.6"
   }
 }

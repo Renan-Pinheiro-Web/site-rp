@@ -14,12 +14,19 @@ test.describe('Tarefa 1 — Nome e logo Essenza', () => {
     expect(title).toContain('Essenza');
   });
 
-  test('nav tem logo com imagem', async ({ page }) => {
+  test('nav tem logo com imagem (ícone sobre hero, lockup completo ao rolar)', async ({ page }) => {
     await page.goto('/');
-    const img = page.locator('.logo-img');
-    await expect(img).toBeVisible();
-    const src = await img.getAttribute('src');
-    expect(src).toContain('essenza');
+    const icon = page.locator('.logo-img--icon');
+    await expect(icon).toBeVisible();
+    const iconSrc = await icon.getAttribute('src');
+    expect(iconSrc).toContain('essenza');
+
+    const full = page.locator('.logo-img--full');
+    await expect(full).toBeHidden();
+
+    await page.evaluate(() => document.getElementById('nav').classList.add('scrolled'));
+    await expect(full).toBeVisible();
+    await expect(icon).toBeHidden();
   });
 
   test('footer tem logo com imagem', async ({ page }) => {
