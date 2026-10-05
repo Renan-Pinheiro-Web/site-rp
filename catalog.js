@@ -25,19 +25,21 @@
     return 'R$ ' + v;
   }
 
-  // Ícone de perfil (frasco) — fallback visual quando não há foto,
-  // mantém o visual dos cards originais. Cor da linha varia com o fundo.
-  function iconeFrasco(variant, grande) {
+  // Ícone fallback quando não há foto — varia por categoria (frasco de
+  // perfume p/ árabe/importado, pote p/ cosmético), igual ao padrão que
+  // já existia nos cards hardcoded. Cor da linha varia com o fundo.
+  function iconeFallback(category, variant, grande) {
     var stroke = variant === 'claro'
       ? 'rgba(44,36,32,.35)'
       : variant === 'creme'
         ? 'rgba(139,111,78,.35)'
         : 'rgba(232,213,192,.5)'; // escuro (default)
     var size = grande ? 56 : 40;
+    var path = (category === 'cosmético')
+      ? '<rect x="7" y="2" width="10" height="20" rx="3"/><path d="M7 7h10"/><circle cx="12" cy="14" r="2"/>'
+      : '<path d="M12 2c-1.5 0-3 .6-3 2.2v2h6v-2C15 2.6 13.5 2 12 2z"/><path d="M8 6.2v11c0 2.8 1.5 4.6 4 4.6s4-1.8 4-4.6v-11"/>';
     return '<svg class="produto-icon" aria-hidden="true" width="' + size + '" height="' + size +
-      '" viewBox="0 0 24 24" fill="none" stroke="' + stroke + '" stroke-width="1">' +
-      '<path d="M12 2c-1.5 0-3 .6-3 2.2v2h6v-2C15 2.6 13.5 2 12 2z"/>' +
-      '<path d="M8 6.2v11c0 2.8 1.5 4.6 4 4.6s4-1.8 4-4.6v-11"/></svg>';
+      '" viewBox="0 0 24 24" fill="none" stroke="' + stroke + '" stroke-width="1">' + path + '</svg>';
   }
 
   function variantClass(v) {
@@ -54,7 +56,7 @@
     var foto = p._foto;
     var imgInner = foto
       ? '<img src="' + esc(foto) + '" alt="' + esc(p.name) + '" class="produto-foto" loading="lazy">'
-      : iconeFrasco(variant, destaque);
+      : iconeFallback(p.category, variant, destaque);
 
     var tag = p.badge_tag
       ? '<span class="produto-tag">' + esc(p.badge_tag) + '</span>'

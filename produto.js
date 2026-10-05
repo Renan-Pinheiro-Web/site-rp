@@ -34,13 +34,17 @@
     return 'produto-img--escuro';
   }
 
-  function iconeFrasco(variant) {
+  // Ícone fallback por categoria (frasco p/ árabe/importado, pote p/
+  // cosmético) — mesmo padrão dos cards da home.
+  function iconeFallback(category, variant, size) {
     var stroke = variant === 'claro' ? 'rgba(44,36,32,.35)'
       : variant === 'creme' ? 'rgba(139,111,78,.35)'
       : 'rgba(232,213,192,.5)';
-    return '<svg class="produto-icon" aria-hidden="true" width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="' + stroke + '" stroke-width="1">' +
-      '<path d="M12 2c-1.5 0-3 .6-3 2.2v2h6v-2C15 2.6 13.5 2 12 2z"/>' +
-      '<path d="M8 6.2v11c0 2.8 1.5 4.6 4 4.6s4-1.8 4-4.6v-11"/></svg>';
+    var path = (category === 'cosmético')
+      ? '<rect x="7" y="2" width="10" height="20" rx="3"/><path d="M7 7h10"/><circle cx="12" cy="14" r="2"/>'
+      : '<path d="M12 2c-1.5 0-3 .6-3 2.2v2h6v-2C15 2.6 13.5 2 12 2z"/><path d="M8 6.2v11c0 2.8 1.5 4.6 4 4.6s4-1.8 4-4.6v-11"/>';
+    return '<svg class="produto-icon" aria-hidden="true" width="' + (size || 72) + '" height="' + (size || 72) +
+      '" viewBox="0 0 24 24" fill="none" stroke="' + stroke + '" stroke-width="1">' + path + '</svg>';
   }
 
   function erro() {
@@ -57,7 +61,7 @@
     var variant = p.background_variant || 'escuro';
     var principal = imgs.length
       ? '<img id="pdMainImg" src="' + esc(imgs[0].image_url) + '" alt="' + esc(p.name) + '" class="produto-foto">'
-      : iconeFrasco(variant);
+      : iconeFallback(p.category, variant);
 
     var thumbs = '';
     if (imgs.length > 1) {
@@ -103,7 +107,7 @@
       var href = '/produto/' + encodeURIComponent(p.slug);
       var foto = p._foto
         ? '<img src="' + esc(p._foto) + '" alt="' + esc(p.name) + '" class="produto-foto" loading="lazy">'
-        : iconeFrasco(variant);
+        : iconeFallback(p.category, variant, 40);
       var marca = p.brand ? '<span class="produto-marca">' + esc(p.brand) + '</span>' : '';
       return '<article class="produto" data-href="' + esc(href) + '">' +
         '<a class="produto-img ' + variantClass(variant) + '" href="' + esc(href) + '" aria-label="' + esc(p.name) + '">' + foto + '</a>' +
@@ -155,6 +159,7 @@
             return (a.display_order || 0) - (b.display_order || 0);
           });
           r._foto = imgs.length ? imgs[0].image_url : null;
+          r.category = p.category; // mesma categoria da query (filtrada)
         });
         slot.innerHTML = relacionadosHTML(rows);
         slot.querySelectorAll('.produto[data-href]').forEach(function (card) {
