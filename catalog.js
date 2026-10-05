@@ -62,6 +62,12 @@
       ? '<span class="produto-tag">' + esc(p.badge_tag) + '</span>'
       : '';
 
+    // Canto oposto ao badge_tag (ver CSS) — produto sem categoria não
+    // quebra o layout, só não renderiza o elemento.
+    var categoriaTag = p.category
+      ? '<span class="produto-categoria">' + esc(p.category) + '</span>'
+      : '';
+
     var marca = p.brand
       ? '<span class="produto-marca" itemprop="brand">' + esc(p.brand) + '</span>'
       : '';
@@ -95,7 +101,7 @@
     return '' +
       '<article class="' + cls + '" itemscope itemtype="https://schema.org/Product" data-href="' + esc(href) + '">' +
         '<a class="produto-img ' + variantClass(variant) + '" href="' + esc(href) + '" aria-label="' + esc(p.name) + '">' +
-          tag + imgInner +
+          tag + categoriaTag + imgInner +
         '</a>' +
         '<div class="produto-info">' +
           marca +
