@@ -1,0 +1,4 @@
+# Rota limpa para a página de detalhe do produto.
+# /produto/slug-do-produto  ->  serve produto.html (status 200 = rewrite,
+# a URL continua limpa; o slug é lido do pathname pelo produto.js).
+/produto/*   /produto.html   200
