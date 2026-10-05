@@ -2,23 +2,10 @@
    Configuração do Supabase — Catálogo do Site (Essenza)
    ============================================================
 
-   >>> TROCAR AQUI AO IR PARA PRODUÇÃO <<<
+*/
 
-   Hoje: credenciais de DEV (migration 004/005 aplicada só em DEV).
-   Quando Renan aplicar as migrations em PRODUÇÃO e validar, trocar
-   os dois valores abaixo pelos de produção e fazer o deploy final.
-
-   PROD (deixado comentado de propósito — NÃO usar antes do deploy):
-     URL  = https://qfrinxjegpwgclyhxoul.supabase.co
-     ANON = (anon key de produção — pegar em Project Settings > API)
-
-   A anon key é pública por desenho: o RLS (Row Level Security) garante
-   que o site só lê o que está marcado is_visible = true. Nenhum dado
-   interno (custo, estoque) existe nestas tabelas.
-   ============================================================ */
-
-const SUPABASE_URL = 'https://yjemkvuaayakvldsszjr.supabase.co'; // DEV
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlqZW1rdnVhYXlha3ZsZHNzempyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA4ODQwNjQsImV4cCI6MjEwNjQ2MDA2NH0.o5ttW0mkTQIMCRbxgqiT2dqq3aWAB4nEFZ4y_-SP980'; // DEV
+const SUPABASE_URL = 'https://qfrinxjegpwgclyhxoul.supabase.co'; // DEV
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmcmlueGplZ3B3Z2NseWh4b3VsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA4ODQxMTEsImV4cCI6MjEwNjQ2MDExMX0.M9CJgCUCeKD-TMfKvHQfliAYqUzWUPvL_Kod0YUZOyY'; // DEV
 
 const SB_REST = SUPABASE_URL + '/rest/v1';
 
