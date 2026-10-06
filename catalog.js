@@ -55,7 +55,8 @@
     // imagem principal (se houver foto); senão, ícone de fallback
     var foto = p._foto;
     var imgInner = foto
-      ? '<img src="' + esc(foto) + '" alt="' + esc(p.name) + '" class="produto-foto" loading="lazy">'
+      ? '<img src="' + esc(foto) + '" alt="" aria-hidden="true" class="produto-foto-bg" loading="lazy">' +
+        '<img src="' + esc(foto) + '" alt="' + esc(p.name) + '" class="produto-foto" loading="lazy">'
       : iconeFallback(p.category, variant, destaque);
 
     var tag = p.badge_tag

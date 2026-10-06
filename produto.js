@@ -106,7 +106,8 @@
       var variant = p.background_variant || 'escuro';
       var href = '/produto/' + encodeURIComponent(p.slug);
       var foto = p._foto
-        ? '<img src="' + esc(p._foto) + '" alt="' + esc(p.name) + '" class="produto-foto" loading="lazy">'
+        ? '<img src="' + esc(p._foto) + '" alt="" aria-hidden="true" class="produto-foto-bg" loading="lazy">' +
+          '<img src="' + esc(p._foto) + '" alt="' + esc(p.name) + '" class="produto-foto" loading="lazy">'
         : iconeFallback(p.category, variant, 40);
       var marca = p.brand ? '<span class="produto-marca">' + esc(p.brand) + '</span>' : '';
       return '<article class="produto" data-href="' + esc(href) + '">' +
